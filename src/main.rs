@@ -1,6 +1,9 @@
 mod auth;
 
 fn main() {
-    auth::auth_manager();
+    match auth::auth_manager(){
+        true => println!("true"),
+        false => println!("false")
+    }
     return ;
 }
