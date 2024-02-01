@@ -1,3 +1,6 @@
+mod auth;
+
 fn main() {
-    println!("Hello, world!");
+    auth::auth_manager();
+    return ;
 }
