@@ -1,7 +1,7 @@
 mod auth;
 
 fn main() {
-    match auth::auth_manager(){
+    match auth::login(){
         true => println!("true"),
         false => println!("false")
     }
