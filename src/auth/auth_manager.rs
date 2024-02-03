@@ -2,11 +2,12 @@ use std::string::String;
 use sha3::{Digest, Sha3_256};
 use rpassword;
 use hex;
+use super::super::structures::*;
 
 fn fetch_username(prompt: &str) -> (String, bool) {
     let mut line: String = String::new();
     let mut hasher: Sha3_256 = Sha3_256::new();
-    let mut valid: bool;
+    let valid: bool;
 
     println!("{}", prompt);
     (line, valid) = super::super::readline(line);
@@ -52,11 +53,14 @@ pub fn login() -> bool {
     return true;
 }
 
-pub fn create_account() -> bool {
+pub fn create_account() -> ConnHandler {
     let (username, user_valid) = fetch_username("Enter username:");
     let (password, pass_valid) = fetch_password("Enter password:");
     let (password2, pass_valid2) = fetch_password("Confirm password");
+    let mut conn: ConnHandler = ConnHandler::new();
+    let mut name: String;
 
+    println!("Returns check");
     if user_valid == false || pass_valid == false || pass_valid2 == false {
         println!("Read error");
         if user_valid == false {
@@ -66,13 +70,35 @@ pub fn create_account() -> bool {
         } else {
             println!("Wat da hail");
         }
-        return false;
+        return conn;
     }
     if password != password2 {
         println!("Passwords do not match.");
-        return false;
+        return conn;
     }
-    println!("{}", username);
-    println!("{}", password);
-    return true;
+    name = format!("./users/{}", username);
+    println!("directory creation\n{}", name.clone());
+    match std::fs::create_dir(name.clone()) {
+        Ok(_nice) => {
+            conn.valid = true;
+        }
+        Err(e) => {
+            println!("Error: \n{}", e);
+            return conn
+        }
+    }
+    name = format!("./users/{}/{}{}", username, username, password);
+    println!("Final step");
+    return match std::fs::File::create(name) {
+        Ok(_nice) => {
+            conn.valid = true;
+            conn.logged = true;
+            conn.user = username;
+            conn
+        }
+        Err(e) => {
+            println!("Error: \n{}", e);
+            conn
+        }
+    }
 }

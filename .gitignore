@@ -1,3 +1,4 @@
 /target
 /.idea
 coding-style-reports.log
+/users/*

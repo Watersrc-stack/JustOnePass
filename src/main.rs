@@ -1,7 +1,7 @@
 use std::io::Write;
-use crate::auth::{create_account, login};
 
 mod auth;
+pub mod structures;
 
 fn readline(mut line: String) -> (String, bool) {
     let valid: bool;
@@ -17,16 +17,18 @@ fn readline(mut line: String) -> (String, bool) {
 fn main() {
     let mut input: String = String::new();
     let mut valid: bool;
+    let mut conn: structures::ConnHandler = structures::ConnHandler::new();
 
     loop {
         print!("--> ");
         std::io::stdout().flush().unwrap();
         (input, valid) = readline(input);
         if !valid || input == "exit\n" {break}
-        else if input == "create\n" {valid = create_account()}
-        else if input == "login\n" {valid = login()}
+        else if input == "create\n" {conn = auth::create_account()}
+        else if input == "login\n" {valid = auth::login()}
         else {println!("Command not found")};
         if !valid {break};
+        if conn.logged {println!("Connected")}
     }
     return ;
 }
