@@ -1,3 +1,7 @@
 mod auth_manager;
-pub use auth_manager::login;
-pub use auth_manager::create_account;
+mod create_account;
+mod fetching;
+mod login;
+
+pub use login::login;
+pub use create_account::create_account;

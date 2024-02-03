@@ -25,10 +25,9 @@ fn main() {
         (input, valid) = readline(input);
         if !valid || input == "exit\n" {break}
         else if input == "create\n" {conn = auth::create_account()}
-        else if input == "login\n" {valid = auth::login()}
+        else if input == "login\n" {conn = auth::login()}
         else {println!("Command not found")};
         if !valid {break};
-        if conn.logged {println!("Connected")}
     }
     return ;
 }

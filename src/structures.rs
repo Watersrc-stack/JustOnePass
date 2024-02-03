@@ -1,15 +1,17 @@
 pub struct ConnHandler {
     pub valid: bool,
+    pub logged: bool,
     pub user: String,
-    pub logged: bool
+    pub key: String
 }
 
 impl ConnHandler {
     pub fn new() -> ConnHandler {
         ConnHandler {
             valid: false,
+            logged: false,
             user: String::new(),
-            logged: false
+            key: String::new()
         }
     }
 }
